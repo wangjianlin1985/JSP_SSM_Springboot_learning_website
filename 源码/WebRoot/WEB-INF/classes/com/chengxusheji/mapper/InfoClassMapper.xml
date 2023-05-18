@@ -1,0 +1,48 @@
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace命名空间，为了对sql语句进行隔离，方便管理，mapper开发dao方式，使用namespace有特殊作用  
+mapper代理开发时将namespace指定为mapper接口的全限定名  
+ -->
+<mapper namespace="com.chengxusheji.mapper.InfoClassMapper"> 
+<!--在mapper.xml文件中配置很多的sql语句，执行每个sql语句时，封装为MappedStatement对象 
+mapper.xml以statement为单位管理sql语句  
+ -->
+	<!-- 添加知识分类记录 -->
+	<insert id="addInfoClass" parameterType="infoClass">
+		insert into t_infoClass(infoClassName,classDesc) values 
+		(#{infoClassName},#{classDesc})
+	</insert>
+
+	<!-- 按照查询条件分页查询知识分类记录 -->
+	<select id="queryInfoClass" resultMap="infoClassMap" >
+		select t_infoClass.* from t_infoClass ${where} limit #{startIndex},#{pageSize}
+	</select>
+	<resultMap id="infoClassMap" type="infoClass">
+        <id property="infoClassId" column="infoClassId" />
+    </resultMap>
+
+    <!-- 按照查询条件查询所有知识分类记录 -->
+	<select id="queryInfoClassList" resultMap="infoClassMap" >
+		select t_infoClass.* from t_infoClass ${where}
+	</select>
+
+    <!-- 按照查询条件的知识分类记录数 -->
+	<select id="queryInfoClassCount" resultType="int">
+		select count(*) from t_infoClass ${where}
+	</select>
+
+	<!-- 根据主键查询某个知识分类记录 -->
+	<select id="getInfoClass" parameterType="int" resultMap="infoClassMap">
+		select * from t_infoClass where t_infoClass.infoClassId = #{infoClassId}
+	</select>
+
+	<!-- 更新知识分类记录 -->
+	<update id="updateInfoClass" parameterType="infoClass">
+		update t_infoClass set infoClassName=#{infoClassName},classDesc=#{classDesc} where infoClassId = #{infoClassId}
+	</update>
+
+	<!-- 删除知识分类记录 -->
+	<delete id="deleteInfoClass" parameterType="int">
+		delete from t_infoClass where infoClassId=#{infoClassId}
+	</delete>
+
+</mapper>
